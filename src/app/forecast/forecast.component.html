@@ -1,0 +1,84 @@
+<!-- <div class="search-container" [formGroup]="searchForm">
+</div> -->
+
+<div class="content" *ngIf="weather">
+  <div class="row">
+    <div class="search-container" [formGroup]="searchForm">
+      <div class="left-container">
+        <input type="text" class="search-input" placeholder="Enter City" formControlName="city">
+      </div>
+      <div class="right-container">
+        <button class="search-button" (click)="searchWeather()">Search</button>&nbsp;&nbsp;
+        <button class="search-button show-location-button" (click)="showLocation()">Show Current Location</button>
+      </div>
+    </div>
+    <div class="top-side">
+      <div class="left-side">
+        <h1 class="city-name">{{ currentCity }}</h1>
+        <div class="all-info">
+          <div class="info-box">
+            <p><span class="capitalize">{{ weather.weather[0].description }}</span></p>
+            <p>Wind Speed: {{ weather.wind.speed }} m/s</p>
+              <p>Humidity: {{ weather.main.humidity }}%</p>
+            </div>
+        </div>
+        <div class="temp-container">
+          <div class="temperature">
+            <p class="temp-text">{{ selectedTemperatureUnit === 'celsius' ? weather.main.temp.toFixed(1) + '°C' : convertToFahrenheit(weather.main.temp) + '°F' }}</p>
+          </div>
+          <div class="temperature-options">
+            <label for="temperatureUnit">Unit:</label>
+            <select id="temperatureUnit" [(ngModel)]="selectedTemperatureUnit">
+              <option value="celsius">Celsius (°C)</option>
+              <option value="fahrenheit">Fahrenheit (°F)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-2">
+        <div class="picture-container">
+          <img *ngIf="weather.weather[0].description === 'Partly cloudy' || weather.weather[0].description === 'Partly Cloudy'" src="../assets/images/cloudy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Light rain shower'" src="../assets/images/cloudy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'thunderstorm with rain'" src="../assets/images/thunderstorm.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Patchy rain nearby'" src="../assets/images/cloudy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Clear'" src="../assets/images/sunny.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Sunny'" src="../assets/images/sunny.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Overcast'" src="../assets/images/stormy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Fog'" src="../assets/images/fog.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Patchy light rain with thunder'" src="../assets/images/stormy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Light rain'" src="../assets/images/stormy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'moderate or heavy rain with thunder'" src="../assets/images/stormy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].description === 'Moderate or heavy rain shower'" src="../assets/images/stormy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].main === 'Clouds'" src="../assets/images/cloudy.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].main === 'Rain' && weather.weather[0].description !== 'Light rain'" src="../assets/images/rain.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].main === 'Clear'" src="../assets/images/sunny.png" alt="Weather Image" class="section-image2">
+          <img *ngIf="weather.weather[0].main === 'Snow'" src="../assets/images/snow.png" alt="Weather Image" class="section-image2">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="content2">
+  <div class="bot-side" *ngIf="forecast">
+    <div class="container-row">
+      <div class="smaller-container1" *ngFor="let day of forecast">
+        <div class="container-divider">
+          <div class="left">
+            <h3>{{ day.dt_txt | date }}</h3>
+            <p>Condition: <span class="capital">{{ day.weather[0].description }}</span></p>
+            <p>Wind Speed: {{ day.wind.speed }} m/s</p>
+          </div>
+
+          <div class="right">
+            <p>Max Temperature: {{ selectedTemperatureUnit === 'celsius' ? day.main.temp_max.toFixed(1) + '°C' : convertToFahrenheit(day.main.temp_max) + '°F' }}</p>
+            <p>Min Temperature: {{ selectedTemperatureUnit === 'celsius' ? day.main.temp_min.toFixed(1) + '°C' : convertToFahrenheit(day.main.temp_min) + '°F' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
