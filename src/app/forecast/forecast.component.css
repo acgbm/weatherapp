@@ -31,7 +31,7 @@
   padding: 12px;
   font-size: 16px;
   border: 1px solid #1D71F2;
-  border-radius: 5px;
+  border-radius: 50px;
   background: #E3F4FE; /* Adjusted darker gradient */
   color: #082e44; /* Cream text color */
 }
@@ -46,7 +46,7 @@
   background: linear-gradient(to bottom, #1C9CF6, #0F4C75); /* Adjusted darker gradient */
   color: #E3F4FE; /* Cream text color */
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -59,7 +59,7 @@
 .weather-content {
   background: linear-gradient(to bottom, #0F4C75, #1C9CF6); /* Adjusted darker gradient */
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 50px;
   color: #E3F4FE; /* Cream text color */
   margin-bottom: 30px;
   text-align: center;
@@ -100,7 +100,7 @@
 .temperature-options select {
   padding: 10px;
   border: 1px solid #79abf7;
-  border-radius: 5px;
+  border-radius: 50px;
   background: linear-gradient(to bottom, #79abf7, #3c759b); /* Adjusted darker gradient */
   color: #0d405e; /* Cream text color */
   font-size: 16px;
@@ -132,7 +132,7 @@
 .forecast-content {
   background: linear-gradient(to bottom, #1D71F2, #0F4C75); /* Adjusted darker gradient */
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 50px;
   color: #FFFAE0; /* Cream text color */
   text-align: center;
   margin-bottom: 30px;
@@ -140,10 +140,10 @@
 
 .forecast-day {
   background: linear-gradient(to bottom, #1C9CF6, #0F4C75); /* Adjusted darker gradient */
-  border-radius: 0px;
+  border-radius: 15px;
   padding: 15px;
-  margin-bottom: 15px;
-  width: calc(50% - 20px);
+  margin: 0 10px 15px 10px;;
+  width: calc(50% - 40px);
   display: inline-block;
   box-sizing: border-box;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding drop shadow */
