@@ -7,7 +7,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class ApiWeatherService {
 
-  apiUrl = 'http://localhost/weatherapi/api';
+  apiUrl = 'http://localhost/forecastapi/api';
 
   constructor(private http: HttpClient) { }
 
