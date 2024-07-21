@@ -30,10 +30,10 @@
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  border: 1px solid #1D71F2;
+  border: 1px solid #30363d;
   border-radius: 50px;
-  background: #E3F4FE; /* Adjusted darker gradient */
-  color: #082e44; /* Cream text color */
+  background: #161b22; /* Adjusted darker gradient */
+  color: #c9d1d9; /* Cream text color */
 }
 
 .search-button-container {
@@ -43,8 +43,8 @@
 .search-button {
   padding: 12px 20px;
   font-size: 16px;
-  background: linear-gradient(to bottom, #1C9CF6, #0F4C75); /* Adjusted darker gradient */
-  color: #E3F4FE; /* Cream text color */
+  background: #238636; /* GitHub dark mode button background color */
+  color: #c9d1d9; /* GitHub dark mode text color */
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -52,18 +52,18 @@
 }
 
 .search-button:hover {
-  background: linear-gradient(to bottom, #1D71F2, #0F4C75); /* Adjusted darker gradient */
+  background: #2ea043; /* GitHub dark mode button hover color */
 }
 
 /* Weather Content */
 .weather-content {
-  background: linear-gradient(to bottom, #0F4C75, #1C9CF6); /* Adjusted darker gradient */
+  background: #161b22; /* GitHub dark mode background color */
   padding: 20px;
   border-radius: 50px;
-  color: #E3F4FE; /* Cream text color */
+  color: #c9d1d9; /* GitHub dark mode text color */
   margin-bottom: 30px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Darker shadow for dark mode */
 }
 
 .weather-header {
@@ -78,7 +78,7 @@
 
 .weather-description {
   font-size: 1.5em;
-  color: #E3F4FE; /* Cream text color */
+  color: #8b949e; /* GitHub dark mode secondary text color */
 }
 
 .weather-details {
@@ -94,15 +94,15 @@
 
 .temperature-options label {
   margin-right: 10px;
-  color: #E3F4FE; /* Cream text color */
+  color: #c9d1d9; /* GitHub dark mode text color */
 }
 
 .temperature-options select {
   padding: 10px;
-  border: 1px solid #79abf7;
+  border: 1px solid #30363d; /* GitHub dark mode input border color */
   border-radius: 50px;
-  background: linear-gradient(to bottom, #79abf7, #3c759b); /* Adjusted darker gradient */
-  color: #0d405e; /* Cream text color */
+  background: #161b22; /* GitHub dark mode input background */
+  color: #c9d1d9; /* GitHub dark mode text color */
   font-size: 16px;
   cursor: pointer;
   transition: border-color 0.3s, background-color 0.3s, color 0.3s;
@@ -111,7 +111,7 @@
 .temperature {
   font-size: 4em;
   font-weight: bold;
-  color: #FFFAE0; /* Yellow text color */
+  color: #e1e4e8; /* GitHub dark mode heading color */
   margin-top: 20px;
 }
 
@@ -130,23 +130,23 @@
 
 /* Forecast Content */
 .forecast-content {
-  background: linear-gradient(to bottom, #1D71F2, #0F4C75); /* Adjusted darker gradient */
+  background: #161b22; /* GitHub dark mode background color */
   padding: 20px;
   border-radius: 50px;
-  color: #FFFAE0; /* Cream text color */
+  color: #c9d1d9; /* GitHub dark mode text color */
   text-align: center;
   margin-bottom: 30px;
 }
 
 .forecast-day {
-  background:linear-gradient(to bottom, #1C9CF6, #0F4C75); 
+  background: #30363d; /* GitHub dark mode background color for forecast items */ 
   border-radius: 15px;
   padding: 15px;
   margin: 0 10px 15px 10px;
   width: calc(50% - 40px);
   display: inline-block;
   box-sizing: border-box;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding drop shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Darker shadow for dark mode */
 }
 
 .forecast-day h3 {
@@ -184,5 +184,64 @@
   .forecast-day {
     width: 100%;
     margin-right: 0;
+  }
+}
+/* Forecast Content */
+.forecast-content {
+  background: #161b22; /* GitHub dark mode background color */
+  padding: 20px;
+  border-radius: 50px;
+  color: #c9d1d9; /* GitHub dark mode text color */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.forecast-days {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.forecast-day {
+  background: #30363d; /* GitHub dark mode background color for forecast items */
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0 10px 15px 10px;
+  width: calc(50% - 40px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Darker shadow for dark mode */
+}
+
+.forecast-details {
+  text-align: left;
+  flex: 1;
+  margin-left: 20px;
+}
+
+.forecast-icon {
+  text-align: right;
+  margin-right: 80px;
+}
+
+.forecast-icon-img {
+  max-width: 80px;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .forecast-day {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .forecast-icon {
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
   }
 }

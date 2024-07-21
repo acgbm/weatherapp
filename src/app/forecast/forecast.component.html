@@ -3,7 +3,7 @@
     <div class="row">
       <div class="search-container" [formGroup]="searchForm">
         <div class="left-container">
-          <input type="text" class="search-input" placeholder="Search City" formControlName="city">
+          <input type="text" class="search-input" placeholder="Search City" formControlName="city" (keydown.enter)="searchWeather()">
         </div>
         <div class="right-container">
           <button class="search-button" (click)="searchWeather()">Enter</button>&nbsp;&nbsp;
@@ -49,21 +49,35 @@
         </select>
       </div>
     </div>
-
-    
   </div>
 
   <div class="forecast-content" *ngIf="forecast">
     <div class="forecast-days">
       <div class="forecast-day" *ngFor="let day of forecast">
-        <h3>{{ day.dt_txt | date }}</h3>
-        <div>
+        <div class="forecast-details">
+          <h3>{{ day.dt_txt | date }}</h3>
           <p>Condition: <span class="capitalize">{{ day.weather[0].description }}</span></p>
           <p>Wind Speed: {{ day.wind.speed }} m/s</p>
-        </div>
-        <div>
           <p>Max Temp: {{ selectedTemperatureUnit === 'celsius' ? day.main.temp_max.toFixed(1) + '°C' : convertToFahrenheit(day.main.temp_max) + '°F' }}</p>
           <p>Min Temp: {{ selectedTemperatureUnit === 'celsius' ? day.main.temp_min.toFixed(1) + '°C' : convertToFahrenheit(day.main.temp_min) + '°F' }}</p>
+        </div>
+        <div class="forecast-icon">
+          <img *ngIf="day.weather[0].description === 'Partly cloudy' || day.weather[0].description === 'Partly Cloudy'" src="../assets/images/partlycloudy.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Light rain shower'" src="../assets/images/lightrainshower.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Thunderstorm with rain'" src="../assets/images/thunderstormwithrain.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Patchy rain nearby'" src="../assets/images/patchyrain.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Clear'" src="../assets/images/clear.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Sunny'" src="../assets/images/sunny.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Overcast'" src="../assets/images/overcast.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Fog'" src="../assets/images/fog.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Patchy light rain with thunder'" src="../assets/images/patchythunder.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Light rain'" src="../assets/images/lightrain.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Moderate or heavy rain with thunder'" src="../assets/images/heavyrainthunder.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].description === 'Moderate or heavy rain shower'" src="../assets/images/heavyrain.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].main === 'Clouds'" src="../assets/images/cloud.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].main === 'Rain' && day.weather[0].description !== 'Light rain'" src="../assets/images/rain.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].main === 'Clear'" src="../assets/images/clear.png" alt="Weather Icon" class="forecast-icon-img">
+          <img *ngIf="day.weather[0].main === 'Snow'" src="../assets/images/snow.png" alt="Weather Icon" class="forecast-icon-img">
         </div>
       </div>
     </div>
