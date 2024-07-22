@@ -23,11 +23,18 @@ export class ForecastComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Retrieve stored data
+    this.loadStoredData();
+    if (!this.currentCity) {
+      this.showLocation();
+    } else {
+      this.searchWeather(); // Trigger search to display the weather
+    }
+  }
+
+  private loadStoredData(): void {
     this.currentCity = localStorage.getItem('currentCity') || '';
     this.selectedTemperatureUnit = localStorage.getItem('temperatureUnit') || 'celsius';
 
-    // Load weather and forecast if available
     const storedWeather = localStorage.getItem('weather');
     const storedForecast = localStorage.getItem('forecast');
     if (storedWeather) {
@@ -36,23 +43,15 @@ export class ForecastComponent implements OnInit {
     if (storedForecast) {
       this.forecast = JSON.parse(storedForecast);
     }
-
-    // Load temperature unit from localStorage
-    const savedUnit = localStorage.getItem('temperatureUnit');
-    if (savedUnit) {
-      this.selectedTemperatureUnit = savedUnit;
-    }
-    
-    // Optionally, show current location on initialization
-    if (!this.currentCity) {
-      this.showLocation();
+    if (this.currentCity && this.weather) {
+      this.searchWeather(); // Trigger search to display the weather
     }
   }
 
   searchWeather(): void {
     const city = this.searchForm.get('city')?.value.trim();
     if (city) {
-      if (this.cache.has(city)) { // Check cache first
+      if (this.cache.has(city)) {
         const cachedData = this.cache.get(city);
         this.weather = cachedData.weather;
         this.forecast = cachedData.forecast;
@@ -63,11 +62,12 @@ export class ForecastComponent implements OnInit {
           data => {
             if (data && data.main) {
               this.weather = data;
-              this.currentCity = city;
+              this.currentCity = this.matchCityName(city, data.name, data.state);
               this.currentState = data.state || '';
-              this.fetch5DayForecast(city, true);
+              this.fetch5DayForecast(this.currentCity, true);
             } else {
               console.error('Invalid weather data', data);
+              alert('Invalid City Name');
             }
           },
           error => {
@@ -80,16 +80,27 @@ export class ForecastComponent implements OnInit {
     }
   }
 
+  private matchCityName(searchedCity: string, apiName: string, apiState: string): string {
+    // Normalize the API names and states
+    const normalizedApiName = apiName.toLowerCase().replace(/ city$/, '');
+    const normalizedSearchedCity = searchedCity.toLowerCase();
+    
+    if (normalizedApiName === normalizedSearchedCity) {
+      return searchedCity; // Exact match
+    } else {
+      // Format as "searchedCity, (name)" or "searchedCity, (state)"
+      return `${searchedCity}, ${apiName || apiState}`;
+    }
+  }
+
   fetch5DayForecast(city: string, cacheData: boolean = false): void {
     this.weatherService.get5DayForecast(encodeURIComponent(city)).subscribe(
       data => {
         if (data && data.list) {
           this.forecast = this.filterForecastData(data.list);
           if (cacheData) {
-            this.cache.set(city, { weather: this.weather, forecast: this.forecast, state: this.currentState }); // Cache data
-            localStorage.setItem('weather', JSON.stringify(this.weather));
-            localStorage.setItem('forecast', JSON.stringify(this.forecast));
-            localStorage.setItem('currentCity', this.currentCity);
+            this.cache.set(city, { weather: this.weather, forecast: this.forecast, state: this.currentState });
+            this.updateLocalStorage();
           }
         } else {
           console.error('Invalid forecast data', data);
@@ -99,6 +110,13 @@ export class ForecastComponent implements OnInit {
         console.error('API error', error);
       }
     );
+  }
+
+  private updateLocalStorage(): void {
+    localStorage.setItem('weather', JSON.stringify(this.weather));
+    localStorage.setItem('forecast', JSON.stringify(this.forecast));
+    localStorage.setItem('currentCity', this.currentCity);
+    localStorage.setItem('temperatureUnit', this.selectedTemperatureUnit);
   }
 
   filterForecastData(data: any[]): any[] {
@@ -142,13 +160,11 @@ export class ForecastComponent implements OnInit {
         },
         (error) => {
           console.error('Geolocation error: ', error);
-          // Notify user about the error and provide an option to enter city manually
           alert('Location access denied. Please enter a city manually.');
         }
       );
     } else {
       console.error('Geolocation is not supported by this browser.');
-      // Notify user that geolocation is not supported and provide an option to enter city manually
       alert('Geolocation is not supported by this browser. Please enter a city manually.');
     }
   }
@@ -159,10 +175,8 @@ export class ForecastComponent implements OnInit {
         if (data && data.list) {
           this.forecast = this.filterForecastData(data.list);
           if (cacheData) {
-            this.cache.set(this.currentCity, { weather: this.weather, forecast: this.forecast, state: this.currentState }); // Cache data
-            localStorage.setItem('weather', JSON.stringify(this.weather));
-            localStorage.setItem('forecast', JSON.stringify(this.forecast));
-            localStorage.setItem('currentCity', this.currentCity);
+            this.cache.set(this.currentCity, { weather: this.weather, forecast: this.forecast, state: this.currentState });
+            this.updateLocalStorage();
           }
         } else {
           console.error('Invalid forecast data', data);
@@ -179,7 +193,6 @@ export class ForecastComponent implements OnInit {
   }
 
   onTemperatureUnitChange(): void {
-    // Save the selected unit to localStorage
     localStorage.setItem('temperatureUnit', this.selectedTemperatureUnit);
   }
 }
