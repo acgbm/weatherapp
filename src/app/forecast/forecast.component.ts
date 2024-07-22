@@ -142,10 +142,14 @@ export class ForecastComponent implements OnInit {
         },
         (error) => {
           console.error('Geolocation error: ', error);
+          // Notify user about the error and provide an option to enter city manually
+          alert('Location access denied. Please enter a city manually.');
         }
       );
     } else {
       console.error('Geolocation is not supported by this browser.');
+      // Notify user that geolocation is not supported and provide an option to enter city manually
+      alert('Geolocation is not supported by this browser. Please enter a city manually.');
     }
   }
 
