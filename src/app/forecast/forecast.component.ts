@@ -11,9 +11,9 @@ export class ForecastComponent implements OnInit {
   searchForm: FormGroup;
   weather: any;
   forecast: any;
-  currentCity: any;
-  currentState: any;
-  selectedTemperatureUnit: string = 'celsius';
+  currentCity: string = '';
+  currentState: string = '';
+  selectedTemperatureUnit: string = 'celsius'; // default unit
   private cache: Map<string, any> = new Map(); // Add cache
 
   constructor(private fb: FormBuilder, private weatherService: ApiWeatherService) {
@@ -22,11 +22,34 @@ export class ForecastComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.showLocation();
+  ngOnInit(): void {
+    // Retrieve stored data
+    this.currentCity = localStorage.getItem('currentCity') || '';
+    this.selectedTemperatureUnit = localStorage.getItem('temperatureUnit') || 'celsius';
+
+    // Load weather and forecast if available
+    const storedWeather = localStorage.getItem('weather');
+    const storedForecast = localStorage.getItem('forecast');
+    if (storedWeather) {
+      this.weather = JSON.parse(storedWeather);
+    }
+    if (storedForecast) {
+      this.forecast = JSON.parse(storedForecast);
+    }
+
+    // Load temperature unit from localStorage
+    const savedUnit = localStorage.getItem('temperatureUnit');
+    if (savedUnit) {
+      this.selectedTemperatureUnit = savedUnit;
+    }
+    
+    // Optionally, show current location on initialization
+    if (!this.currentCity) {
+      this.showLocation();
+    }
   }
 
-  searchWeather() {
+  searchWeather(): void {
     const city = this.searchForm.get('city')?.value.trim();
     if (city) {
       if (this.cache.has(city)) { // Check cache first
@@ -57,13 +80,16 @@ export class ForecastComponent implements OnInit {
     }
   }
 
-  fetch5DayForecast(city: string, cacheData: boolean = false) {
+  fetch5DayForecast(city: string, cacheData: boolean = false): void {
     this.weatherService.get5DayForecast(encodeURIComponent(city)).subscribe(
       data => {
         if (data && data.list) {
           this.forecast = this.filterForecastData(data.list);
           if (cacheData) {
             this.cache.set(city, { weather: this.weather, forecast: this.forecast, state: this.currentState }); // Cache data
+            localStorage.setItem('weather', JSON.stringify(this.weather));
+            localStorage.setItem('forecast', JSON.stringify(this.forecast));
+            localStorage.setItem('currentCity', this.currentCity);
           }
         } else {
           console.error('Invalid forecast data', data);
@@ -91,7 +117,7 @@ export class ForecastComponent implements OnInit {
     return dailyForecast;
   }
 
-  showLocation() {
+  showLocation(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -123,13 +149,16 @@ export class ForecastComponent implements OnInit {
     }
   }
 
-  fetch5DayForecastByCoordinates(lat: number, lon: number, cacheData: boolean = false) {
+  fetch5DayForecastByCoordinates(lat: number, lon: number, cacheData: boolean = false): void {
     this.weatherService.get5DayForecastByCoordinates(lat, lon).subscribe(
       data => {
         if (data && data.list) {
           this.forecast = this.filterForecastData(data.list);
           if (cacheData) {
             this.cache.set(this.currentCity, { weather: this.weather, forecast: this.forecast, state: this.currentState }); // Cache data
+            localStorage.setItem('weather', JSON.stringify(this.weather));
+            localStorage.setItem('forecast', JSON.stringify(this.forecast));
+            localStorage.setItem('currentCity', this.currentCity);
           }
         } else {
           console.error('Invalid forecast data', data);
@@ -143,5 +172,10 @@ export class ForecastComponent implements OnInit {
 
   convertToFahrenheit(celsius: number): string {
     return ((celsius * 9/5) + 32).toFixed(1);
+  }
+
+  onTemperatureUnitChange(): void {
+    // Save the selected unit to localStorage
+    localStorage.setItem('temperatureUnit', this.selectedTemperatureUnit);
   }
 }

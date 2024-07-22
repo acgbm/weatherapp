@@ -37,13 +37,14 @@
       <img *ngIf="weather.weather[0].main === 'Clear'" src="../assets/images/clear.png" alt="Weather Image" class="section-image2">
       <img *ngIf="weather.weather[0].main === 'Snow'" src="../assets/images/snow.png" alt="Weather Image" class="section-image2">
     </div>
+
     <div class="weather-details">
       <div class="temperature">
         <p class="temperature-value">{{ selectedTemperatureUnit === 'celsius' ? weather.main.temp.toFixed(1) + '°C' : convertToFahrenheit(weather.main.temp) + '°F' }}</p>
       </div>
       <div class="temperature-options">
         <label for="temperatureUnit">Unit:</label>
-        <select id="temperatureUnit" [(ngModel)]="selectedTemperatureUnit">
+        <select id="temperatureUnit" [(ngModel)]="selectedTemperatureUnit" (change)="onTemperatureUnitChange()">
           <option value="celsius">Celsius (°C)</option>
           <option value="fahrenheit">Fahrenheit (°F)</option>
         </select>
